@@ -1,3 +1,6 @@
+//testing or deployment. testing set to true is for not actually following but simulating.
+mTesting=true;
+
 //node libs
 
 var express = require('express');
@@ -25,6 +28,7 @@ tumblr.request(require('request'));
 module.exports = tumblr;
 
 
+//example tumblr client. not used;
 
 var client = tumblr.createClient({
   consumer_key: 'SqFu4wiBMiyfl6v40GBfCOEDEOECxtIn3A1q5z2sirVnqpifZ8',
@@ -145,10 +149,10 @@ function download(url, callback) {
 
 function getUserInfo(){
 
-	client.userInfo(function (err, data) {
-    data.user.blogs.forEach(function (blog) {
-        console.log(blog.name);
-    });
+  client.userInfo(function (err, data) {
+   console.log( data.user.name)
+
+
 });
 }
 
@@ -359,9 +363,10 @@ self.app.listen(self.port, self.ipaddress, function() {
 
         //test
    
-      //  exUser= new followBot();
+       exUser= new followBot();
       
-        //exUser.findPopularContent('rock');
+        exUser.findPopularContent('mike');
+      // getUserInfo();
 
         });
 
@@ -594,7 +599,7 @@ var followBot= function(settings){
 
 
             if(whichBot.isAlreadyDone(usernames[i]['username'], whichBot)){
-                console.log("already did something to user " +usernames[i]+" this session... continuing....");
+                console.log("already did something to user " +usernames[i]['username']+" this session... continuing....");
                 continue;
             }
             else{
@@ -613,11 +618,13 @@ var followBot= function(settings){
 
     this.followUser= function(tUser, whichBot){
 
-        var randNum = Math.floor((Math.random() * 5000));
+        var randNum = Math.floor((Math.random() * 5000)+1);
+        console.log(randNum);
         var userToFollow = tUser.username;
        var tiUser=tUser;
         setTimeout(function(){
 
+                        if(mTesting==false){
                    
                         whichBot.client.follow(tiUser['username']+".tumblr.com", function(){console.log("yea")});
                          console.log("\n\n the blog name:"+tiUser['username']);
@@ -628,10 +635,94 @@ var followBot= function(settings){
                         });*/
                    
                      console.log('following user'+tiUser['username']);
+                        }
+
+                        else{
+
+                            console.log("simulated follow of "+tiUser['username']+".tumblr.com");
+                        }
+
+
                  
 
         }, randNum, tiUser);
     }
+
+
+
+    this.likeUserContent= function(blogId, reblogId, whichBot){
+
+        var randNum = Math.floor((Math.random() * 5000)+1);
+        console.log(randNum);
+       
+       var tiId=reblogId;
+       blogId1=blogId;
+        setTimeout(function(){
+
+                        if(mTesting==false){
+                   
+                        whichBot.client.like(blogId1, tiId, function(data, err){
+
+                          console.log("data comin")
+                          console.log(err);
+                          console.log("yea")});
+                        console.log("\n\n  blog id:"+blogId1);
+                         console.log("\n\n the reblog id:"+tiId);
+
+                        console.log("liked!");
+                       /* data.user.blogs.forEach(function (blog) {
+                           
+                        });*/
+                   
+                     console.log('liked post: '+tiId);
+                        }
+
+                        else{
+
+                            console.log("simulated like of of "+tiId);
+                        }
+
+
+                 
+
+        }, randNum, tiId, blogId1);
+    }
+
+    this.repostUserContent= function(blogId, reblogId, whichBot){
+
+        var randNum = Math.floor((Math.random() * 5000)+1);
+        console.log(randNum);
+       
+       var tiId=reblogId;
+      var blogId1=blogId;
+        setTimeout(function(){
+
+                        if(mTesting==false){
+                   
+                        whichBot.client.reblog(blogId1, tiId, function(){console.log("yea")});
+                          console.log("\n\n  blog id:"+blogId1);
+                         console.log("\n\n the reblog id:"+tiId);
+
+                        console.log("liked!");
+                       /* data.user.blogs.forEach(function (blog) {
+                           
+                        });*/
+                   
+                     console.log('reposted: '+tiId);
+                        }
+
+                        else{
+
+                            console.log("simulated repost of of "+tiId);
+                        }
+
+
+                 
+
+        }, randNum, tiId, blogId1);
+    }
+
+
 
     this.reblogPost= function(postId){
 
@@ -685,7 +776,16 @@ var followBot= function(settings){
 
                     
 
-                  
+                  console.log(data[i]['reblog_key']);
+                  data[i]['name']= data[i]['post_url'].replace('http://', '').replace('https://','');
+                  data[i]['id']= data[i]['id'];
+                  console.log(data[i]['name']);
+
+                  //takes id
+                  theBot.likeUserContent(data[i]['id'], data[i]['reblog_key'], theBot);
+
+                  //takes blog name
+                  theBot.repostUserContent(data[i]['name'], data[i]['reblog_key'], theBot);
 
                   theBot.getFollowers(data[i]['post_url'], keyword, theBot.gotFollowersCB, theBot)
                 }
