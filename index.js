@@ -1,5 +1,5 @@
 //testing or deployment. testing set to true is for not actually following but simulating.
-mTesting=true;
+mTesting=false;
 
 //node libs
 
@@ -53,9 +53,81 @@ var MongoClient1 = require('mongodb').MongoClient;
     })
 
 
-var theBots = [
+lastStart= 1000;
+startToAdd = 1000;
+lastStartNum =0;
+depTimeout = 3000;
+        oriTimeout = 3000;
+function startIt(){
+
+  
+   
+
+      if(typeof airM=="undefined"){
+         airM = new airMaster();
+        allTheBots= airM.init(theBots);
+        botsArr= []; 
+        console.log("\n\n making air master\n");
+      }
+        
+        
+        for (i=0; i<(theBots.length-1); i++){
+          //initiate the bots into the queue
+          var z= parseInt(lastStartNum);
+         setTimeout(function(){
+         
+          //console.log('doing bot'+z+ theBots[z]['username'])
+
+          initBots(z)
+
+         },  depTimeout, z);
+
+          depTimeout= oriTimeout+depTimeout;
+          console.log(depTimeout)
+         break;
+        }
+
+      if(lastStartNum < theBots.length){
+        lastStartNum=lastStartNum+1;
+        startIt();
+        return;
+      }
+
+  
+     }
+
+   
+    
+       
+    
+
+
+
+function initBots(z){
+
+
+          
+
+
+          botsArr[z]= new followBot(allTheBots[z]);
+       var   theKeyword = botsArr[z].getKeyword(botsArr[z]);
+          console.log(theKeyword)
+          
+          var currentBot= botsArr[z];
+
+
+
+
+            
+            console.log("\n \n \n finished wait... deploying bot.. \n \n\n ");
+            currentBot.findPopularContent(theKeyword);
+          //return true;
+          
+
+}
+theBots = [
                   {"username":
-                      "bumbletum", 
+                      "bumblrtum", 
                     "category":
                         "misc",
                   "settings":
@@ -124,12 +196,754 @@ var theBots = [
                 
 
                   //end settings
+                },
+
+                  //end bot
+                
+
+                //comma, next bot
+
+
+
+
+ {"username":
+                      "rebbyham", 
+                    "category":
+                        "celebrity",
+                  "settings":
+
+                    //for tumblr
+                    {"userCred":
+                      
+                      {
+                        "tumblr":
+                        {
+                          consumer_key: 'wRVo4OEtYPVv510wh4ga58N9cYDYQ08uhGtLBfqQaXSjdWVflU',
+                          
+                          consumer_secret: 'Db8rn22y26jCWDwC4q9ZJW9eMYEjKLTBzr564GFfn8HL2INcMm',
+                         
+                          token: 'VP9BZZuNtI5JaygNydRtOhFAkVc3PHgltxfTXVrS4oNfbwmwb',
+                          
+                          token_secret: 'HrOKOHEGkq10hY8c0W7P2awx8scnAD8XnMdMu1X5LwPmk1t9B4'
+
+                      },
+
+                        "twitter":
+
+                      {
+                         consumer_key: null,
+                        
+                        consumer_secret: null,
+                       
+                        token: null,
+                        
+                        token_secret: null
+
+                      },
+                      "reddit":
+
+                      {
+                         consumer_key: null,
+                        
+                        consumer_secret: null,
+                       
+                        token: null,
+                        
+                        token_secret: null
+
+                      },
+                    "feedly":
+
+                      {
+                         consumer_key: null,
+                        
+                        consumer_secret: null,
+                       
+                        token: null,
+                        
+                        token_secret: null
+
+                      }
+
+                      
+                  }
+
+                  //end social
+                }
+                  ////end credentials
+                
+
+                
+
+                  //end settings
+                },
+
+                  //end bot
+                
+
+                //comma, next bot
+
+
+
+
+
+ {"username":
+                      "debranebraniner", 
+                    "category":
+                        "misc",
+                  "settings":
+
+                    //for tumblr
+                    {"userCred":
+                      
+                      {
+                        "tumblr":
+                        {
+                          consumer_key: '5LB2NDlPnBHDUD8on7QwTX8C90X2rW3PIC927XK9Qer5Pq3tj8',
+                          
+                          consumer_secret: 'yzOgdRk1af9aestbPC6Ckou7PCohgKAr21PBcVkNdjEKlaZpis',
+                         
+                          token: 'ovqUuw3d7dIdeTdsjJmSun7H4MtqIZjztSVnshRnWq25m2T2vu',
+                          
+                          token_secret: 'BtMyleAt4HnTb3YStaAfuKV78aMsynkgAuuPytCk5meVVaLrZq'
+
+                      },
+
+                        "twitter":
+
+                      {
+                         consumer_key: null,
+                        
+                        consumer_secret: null,
+                       
+                        token: null,
+                        
+                        token_secret: null
+
+                      },
+                      "reddit":
+
+                      {
+                         consumer_key: null,
+                        
+                        consumer_secret: null,
+                       
+                        token: null,
+                        
+                        token_secret: null
+
+                      },
+                    "feedly":
+
+                      {
+                         consumer_key: null,
+                        
+                        consumer_secret: null,
+                       
+                        token: null,
+                        
+                        token_secret: null
+
+                      }
+
+                      
+                  }
+
+                  //end social
+                }
+                  ////end credentials
+                
+
+                
+
+                  //end settings
+                },
+
+                  //end bot
+                
+
+                //comma, next bot
+
+
+
+
+ {"username":
+                      "emillywheele", 
+                    "category":
+                        "food",
+                  "settings":
+
+                    //for tumblr
+                    {"userCred":
+                      
+                      {
+                        "tumblr":
+                        {
+                          consumer_key: 'DcB0zFhUzkhGX57ICDvlg4CyIUbtkHoNhrCK0ydJ6gQks1ZQ0B',
+                          
+                          consumer_secret: 'MDfc7tjo0WdPiSdrF5cSaNBZWkmsEy9CQcr42vhfac54cbQiCv',
+                         
+                          token: 'hqfXl88pSP3SKMyxeNB8AckZlv4rE4VZqOibUWGLhElqc8Uy4N',
+                          
+                          token_secret: 'oBK6wajSKWTSa56Ooo7u5OX9IDoP7YfvRxuyBVcZ1cWQdYIV7M'
+
+                      },
+
+                        "twitter":
+
+                      {
+                         consumer_key: null,
+                        
+                        consumer_secret: null,
+                       
+                        token: null,
+                        
+                        token_secret: null
+
+                      },
+                      "reddit":
+
+                      {
+                         consumer_key: null,
+                        
+                        consumer_secret: null,
+                       
+                        token: null,
+                        
+                        token_secret: null
+
+                      },
+                    "feedly":
+
+                      {
+                         consumer_key: null,
+                        
+                        consumer_secret: null,
+                       
+                        token: null,
+                        
+                        token_secret: null
+
+                      }
+
+                      
+                  }
+
+                  //end social
+                }
+                  ////end credentials
+                
+
+                
+
+                  //end settings
+                },
+
+                  //end bot
+                
+
+                //comma, next bot
+
+
+
+
+
+
+
+
+ {"username":
+                      "patricialanf", 
+                    "category":
+                        "fashion",
+                  "settings":
+
+                    //for tumblr
+                    {"userCred":
+                      
+                      {
+                        "tumblr":
+                        {
+                          consumer_key: 'WcymgSSuSp9bdVCyS8fegqiEIqwc0M6pW3f7mO83JncfIbeDDC',
+                          
+                          consumer_secret: 'qd8pwaZ7LoCN2PtW2dT2jArG5wMxssGcJnvkgmmUykAXwaRr0j',
+                         
+                          token: 'pxRHNVilQQYk8xGRJhyqqTxnaP0FMzIyyqzJLidKiYgMpeQcH6',
+                          
+                          token_secret: 'crTk2NyUNIndeGpcKUd932OE8nzrqtTaTQhCbceGK2tlTSQQ2Y'
+
+                      },
+
+                        "twitter":
+
+                      {
+                         consumer_key: null,
+                        
+                        consumer_secret: null,
+                       
+                        token: null,
+                        
+                        token_secret: null
+
+                      },
+                      "reddit":
+
+                      {
+                         consumer_key: null,
+                        
+                        consumer_secret: null,
+                       
+                        token: null,
+                        
+                        token_secret: null
+
+                      },
+                    "feedly":
+
+                      {
+                         consumer_key: null,
+                        
+                        consumer_secret: null,
+                       
+                        token: null,
+                        
+                        token_secret: null
+
+                      }
+
+                      
+                  }
+
+                  //end social
+                }
+                  ////end credentials
+                
+
+                
+
+                  //end settings
+                },
+
+                  //end bot
+                
+
+                //comma, next bot
+
+
+
+
+
+
+
+
+
+
+ {"username":
+                      "marycobby", 
+                    "category":
+                        "misc",
+                  "settings":
+
+                    //for tumblr
+                    {"userCred":
+                      
+                      {
+                        "tumblr":
+                        {
+                          consumer_key: 'hIBAiCdrn5dGuOFEKxIfiGVq2Zcotq51qcZ5qCTwZmcnlrgBCO',
+                          
+                          consumer_secret: 'jC6eyylbHAWql6RvPBZiQeSYp8UkX7deNQiTsHmIPyL29cLlpt',
+                         
+                          token: 'Jm1ZlkQgGn9r5oh9mEfXZoE102mU2ENar0O1uK31xrcEXf84sn',
+                          
+                          token_secret: 'qoyvkiNzhuvA2peyeB1ktcdIgMuzOHIIXMbSuWH1IRfXszhyD9'
+
+                      },
+
+                        "twitter":
+
+                      {
+                         consumer_key: null,
+                        
+                        consumer_secret: null,
+                       
+                        token: null,
+                        
+                        token_secret: null
+
+                      },
+                      "reddit":
+
+                      {
+                         consumer_key: null,
+                        
+                        consumer_secret: null,
+                       
+                        token: null,
+                        
+                        token_secret: null
+
+                      },
+                    "feedly":
+
+                      {
+                         consumer_key: null,
+                        
+                        consumer_secret: null,
+                       
+                        token: null,
+                        
+                        token_secret: null
+
+                      }
+
+                      
+                  }
+
+                  //end social
+                }
+                  ////end credentials
+                
+
+                
+
+                  //end settings
+                },
+
+                  //end bot
+                
+
+                //comma, next bot
+
+
+
+
+
+
+
+
+
+
+ {"username":
+                      "jodyroad", 
+                    "category":
+                        "misc",
+                  "settings":
+
+                    //for tumblr
+                    {"userCred":
+                      
+                      {
+                        "tumblr":
+                        {
+                          consumer_key: 'fiaDo909SSVfXfhquzCXgthIkpIKi8C0ydv6QMZ3NAAPj4pl1H',
+                          
+                          consumer_secret: 'xHmq6BQWUZqIy5QqRIt9alyzociUdHrFxwFlwGL0CsmQZjB2rQ',
+                         
+                          token: 'UQrhr2Fuq1kaAWH2tz8kSETBALnUMTgSFkzIKeHRvWk70e0MTl',
+                          
+                          token_secret: 'LbAmSWRa6l7Y08ZStOZKLhZHTEiekXd611lBvfZhRyJTc1OEVR'
+
+                      },
+
+                        "twitter":
+
+                      {
+                         consumer_key: null,
+                        
+                        consumer_secret: null,
+                       
+                        token: null,
+                        
+                        token_secret: null
+
+                      },
+                      "reddit":
+
+                      {
+                         consumer_key: null,
+                        
+                        consumer_secret: null,
+                       
+                        token: null,
+                        
+                        token_secret: null
+
+                      },
+                    "feedly":
+
+                      {
+                         consumer_key: null,
+                        
+                        consumer_secret: null,
+                       
+                        token: null,
+                        
+                        token_secret: null
+
+                      }
+
+                      
+                  }
+
+                  //end social
+                }
+                  ////end credentials
+                
+
+                
+
+                  //end settings
+                },
+
+                  //end bot
+                
+
+                //comma, next bot
+
+
+
+
+
+
+
+ {"username":
+                      "darlenelamp", 
+                    "category":
+                        "celebrity",
+                  "settings":
+
+                    //for tumblr
+                    {"userCred":
+                      
+                      {
+                        "tumblr":
+                        {
+                          consumer_key: '8jtLrsuwo9pOPTjz2Vs7FdLYEKQXd3BsylHsEyNT4DY3R8mJVI',
+                          
+                          consumer_secret: 'Oga7A8LFcQOXtOm52aFcPX1Ak4P6amd6WYRLwRqcp1WLp3lLMG',
+                         
+                          token: 'nO1QUT0ZtDzAc8noykiTxyRuXM8zYquX5BDGa7J2R7yEvFvBvY',
+                          
+                          token_secret: 'LbAmSWRa6l7Y08ZStOZKLhZHTEiekXd611lBvfZhRyJTc1OEVR'
+
+                      },
+
+                        "twitter":
+
+                      {
+                         consumer_key: null,
+                        
+                        consumer_secret: null,
+                       
+                        token: null,
+                        
+                        token_secret: null
+
+                      },
+                      "reddit":
+
+                      {
+                         consumer_key: null,
+                        
+                        consumer_secret: null,
+                       
+                        token: null,
+                        
+                        token_secret: null
+
+                      },
+                    "feedly":
+
+                      {
+                         consumer_key: null,
+                        
+                        consumer_secret: null,
+                       
+                        token: null,
+                        
+                        token_secret: null
+
+                      }
+
+                      
+                  }
+
+                  //end social
+                }
+                  ////end credentials
+                
+
+                
+
+                  //end settings
+                },
+
+                  //end bot
+                
+
+                //comma, next bot
+
+
+
+
+
+ {"username":
+                      "perkyperk03", 
+                    "category":
+                        "fashion",
+                  "settings":
+
+                    //for tumblr
+                    {"userCred":
+                      
+                      {
+                        "tumblr":
+                        {
+                          consumer_key: 'EKo5d87b8qV83JQamhM3VVx2D0LYBpQH9SzLQ3t4kInh4xEim6',
+                          
+                          consumer_secret: 'Q0KUrEq4DGcD3XKnaKWz5u9oOR0F7wwoh8oB96CSYKNgmduTBz',
+                         
+                          token: 'DYBhwgpi0B3ph6zkpFgd5OryQhtjJFDELkJ8BULj5vgYma8Lvq',
+                          
+                          token_secret: 'DPS7ZFYKn3mFEnn3P0URMHZZwgdd3T2K273ZTIyyw9QByG1gBs'
+
+                      },
+
+                        "twitter":
+
+                      {
+                         consumer_key: null,
+                        
+                        consumer_secret: null,
+                       
+                        token: null,
+                        
+                        token_secret: null
+
+                      },
+                      "reddit":
+
+                      {
+                         consumer_key: null,
+                        
+                        consumer_secret: null,
+                       
+                        token: null,
+                        
+                        token_secret: null
+
+                      },
+                    "feedly":
+
+                      {
+                         consumer_key: null,
+                        
+                        consumer_secret: null,
+                       
+                        token: null,
+                        
+                        token_secret: null
+
+                      }
+
+                      
+                  }
+
+                  //end social
+                }
+                  ////end credentials
+                
+
+                
+
+                  //end settings
+                },
+
+                  //end bot
+                
+
+                //comma, next bot
+
+
+
+
+ {"username":
+                      "krose612", 
+                    "category":
+                        "misc",
+                  "settings":
+
+                    //for tumblr
+                    {"userCred":
+                      
+                      {
+                        "tumblr":
+                        {
+                          consumer_key: 'HGczadkARa67Y9A9pcTkWO6FkJsmiWUHJXQytECQQc1LsBK0rr',
+                          
+                          consumer_secret: 's0ToUzTAU3t7lV0Oq5k7AONVjvgB6XSbRKFLQGdVwOCYCu5ke0',
+                         
+                          token: 'rhj643lv47CGnSrm3bZJa5O2sMHqpY98V1uNP6IM8d0cigiJsR',
+                          
+                          token_secret: 'cGshM3viDhcYX9Px0IQwwzqE6w7FJ872AqS7Ch3yT4tyviLjb7'
+
+                      },
+
+                        "twitter":
+
+                      {
+                         consumer_key: null,
+                        
+                        consumer_secret: null,
+                       
+                        token: null,
+                        
+                        token_secret: null
+
+                      },
+                      "reddit":
+
+                      {
+                         consumer_key: null,
+                        
+                        consumer_secret: null,
+                       
+                        token: null,
+                        
+                        token_secret: null
+
+                      },
+                    "feedly":
+
+                      {
+                         consumer_key: null,
+                        
+                        consumer_secret: null,
+                       
+                        token: null,
+                        
+                        token_secret: null
+
+                      }
+
+                      
+                  }
+
+                  //end social
+                }
+                  ////end credentials
+                
+
+                
+
+                  //end settings
                 }
 
                   //end bot
                 
 
                 //comma, next bot
+
 
 
 
@@ -184,7 +998,7 @@ function queueJobForBot(data, theCallback, waitTime, numTimes, whichBot){
         sendArr['whichOne']= whichO; 
 
         setTimeout(function(){
-            console.log(whichO);
+            //console.log(whichO);
             //console.log(whichBot.onGroup);
            theCallback(thatData, whichBot);
        
@@ -193,7 +1007,7 @@ function queueJobForBot(data, theCallback, waitTime, numTimes, whichBot){
        
         whichO= whichO+1;
        // console.log(whichO);
-      console.log('\n \nwaittime='+whichBot.currentWaitTime);
+      //console.log('\n \nwaittime='+whichBot.currentWaitTime);
         whichTime=whichTime+1;
 
         if(whichBot.onAction >= whichBot.defaultActionLimit){
@@ -278,10 +1092,13 @@ function getFollowers(postUrl, keyword){
             download(postUrl, function(data) {
             
                 // console.log(data);
+                try{
                 var $ = cheerio.load(data);
 
      	
                 newArr= [];
+
+
               $(".notes .note span a").each(function(i, e) {
               	console.log($(this).html())
 
@@ -289,14 +1106,24 @@ function getFollowers(postUrl, keyword){
               	newArr.push(newElem)
               });
 
-              console.log(newArr);
+              //console.log(newArr);
                dbv.collection('users').insert( newArr,function(err, records){
              			console.log("user saved saved");
 
             })
 
 
-          })
+          }
+
+        
+
+
+        catch(err){
+
+          console.log("cheerio coughed up... returning");
+          return false;
+        }
+      })
 
 }
 
@@ -448,30 +1275,10 @@ self.app.listen(self.port, self.ipaddress, function() {
 
         //test
 
-        console.log('returning for openshift push... remove this line... currently 451 in index.js');
-        return;
-        airM = new airMaster();
-        allTheBots= airM.init(theBots);
-        botsArr= []; 
-        depTimeout = 3000;
-        oriTimeout = 3000;
-        for (i in allTheBots){
-          //initiate the bots into the queue
-          botsArr[i]= new followBot(allTheBots[i]);
-          theKeyword = botsArr[i].getKeyword(botsArr[i]);
-          console.log(theKeyword)
-          
-          var currentBot= botsArr[i];
-         
-          setTimeout(function(){
-            
-            console.log("\n \n \n finished wait... deploying bot.. \n \n\n ");
-            currentBot.findPopularContent(theKeyword);
-          },  depTimeout, currentBot)
-
-          depTimeout= oriTimeout+depTimeout;
-        }
-   
+        //console.log('returning for openshift push... remove this line... currently 451 in index.js');
+        //return;
+      
+   //startIt();
        
 
    //old before scale below
@@ -524,12 +1331,14 @@ self.app.listen(self.port, self.ipaddress, function() {
         var schedule = require('node-schedule');
 
 var rule = new schedule.RecurrenceRule();
-
-rule.minute = new schedule.Range(0, 59, 20);
+var every =10;//minutes
+rule.minute = new schedule.Range(0, 59,every );
 
 
 var k = schedule.scheduleJob(rule, function(){
-    console.log('starting timer');
+    console.log('starting tumblr bots every '+ every+ " mins");
+    startIt();
+
     
    /*
     dbv.close();
@@ -580,7 +1389,8 @@ zapp.start();
 
 var followBot= function(settings){
 
-
+  var blah = this;
+  console.log(blah);
 
     if(typeof(settings)=="undefined"){
 
@@ -590,9 +1400,13 @@ var followBot= function(settings){
     try{
 
        //this.inst =this;
+       console.log(this)
        settings['inst']= this;
        this.key = airM.addBot(settings);
-
+       airM.whichBotOn(this);
+      console.log('showing this...')
+       console.log(this);
+        console.log('\n\nshowed this...')
 
 
 
@@ -605,6 +1419,7 @@ var followBot= function(settings){
         airM = new airMaster();
         settings['inst']= this;
        this.key = airM.addBot(settings);
+        airM.whichBotOn(this);
 
     }
     //per minute
@@ -622,23 +1437,28 @@ var followBot= function(settings){
 
     this.username=null;
 
+    //which bot we're on for air traffic/master ctrl
 
-    this.defaultActionLimit=15;
 
-    this.defaultFollowLimit = 10;
+
+    this.defaultActionLimit=3;
+
+    this.defaultFollowLimit = 3;
+
+    this.onFollowAction=0;
 
     //seconds... time between actions
     this.defaultTimeSplit = 2;
 
     //per minute
-    this.defaultRepostLimit = 10;
+    this.defaultRepostLimit = 3;
 
 
     //which one we're on now for this bot
     this.onPostAction=0;
 
     //per minute
-    this.defaultLikeLimit = 10;
+    this.defaultLikeLimit = 2;
 
     this.onLikeAction=0;
 
@@ -717,6 +1537,13 @@ var followBot= function(settings){
     console.log('got user');
 
 
+    this.setBatchSize= function(bSize){
+
+      this.batchSize= bSize;
+      console.log("bSize is"+ this.batchSize);
+      return this.batchSize;
+
+    }
     this.getKeyword= function(whichBot){
 
       var defKeyw = whichBot.currentKeyword;
@@ -771,7 +1598,7 @@ var followBot= function(settings){
       }
 
 
-      console.log(keywordsArr);
+      //console.log(keywordsArr);
          var nRandNum =  Math.floor((Math.random() * keywordsArr.length));
          console.log(nRandNum)
 
@@ -820,11 +1647,20 @@ var followBot= function(settings){
 
     this.followUser= function(tUser, whichBot){
 
-        var randNum = Math.floor((Math.random() * 5000)+1);
+        var randNum = Math.floor((Math.random() * 10000)+1);
         console.log(randNum);
         var userToFollow = tUser.username;
        var tiUser=tUser;
         setTimeout(function(){
+
+           if(whichBot.onFollowAction >= whichBot.defaultFollowLimit){
+                      console.log("reached default limit of follows for user:"+ whichBot.username);
+                      return false;
+                      }
+                      else{
+                        whichBot.onFollowAction =whichBot.onFollowAction +1;
+
+                      }
 
                         if(mTesting==false){
                    
@@ -841,7 +1677,7 @@ var followBot= function(settings){
 
                         else{
 
-                            console.log("simulated follow of "+tiUser['username']+".tumblr.com");
+                            console.log("simulated follow of "+tiUser['username']+".tumblr.com" +"on topic " + whichBot.currentKeyword + "for "+ whichBot.username);
                         }
 
 
@@ -892,7 +1728,7 @@ var followBot= function(settings){
 
                         else{
 
-                            console.log("simulated like of of "+tiId);
+                            console.log("simulated like of of "+tiId +" on topic " + whichBot.currentKeyword + "for "+ whichBot.username);
                         }
 
 
@@ -901,13 +1737,14 @@ var followBot= function(settings){
         }, randNum, tiId, blogId1);
     }
 
-    this.repostUserContent= function(blogId, reblogId, whichBot){
+    this.repostUserContent= function(blogId, reblogId, realBlogId, whichBot){
 
         var randNum = Math.floor((Math.random() * 5000)+1);
         console.log(randNum);
        
        var tiId=reblogId;
       var blogId1=blogId;
+      var blogId2 = realBlogId;
         setTimeout(function(){
 
 
@@ -923,11 +1760,13 @@ var followBot= function(settings){
 
                         if(mTesting==false){
                    
-                        whichBot.client.reblog(blogId1, tiId, function(){console.log("yea")});
-                          console.log("\n\n  blog id:"+blogId1);
+                        whichBot.client.reblog(blogId1, {"reblog_key":tiId, "id":blogId2}, function(){console.log("yea")});
+                       // console.log(resp1)
+                          console.log("\n\n  blog id:"+blogId2);
+                          console.log("\n\n  blog:"+blogId1);
                          console.log("\n\n the reblog id:"+tiId);
 
-                        console.log("liked!");
+                        //console.log("liked!");
                        /* data.user.blogs.forEach(function (blog) {
                            
                         });*/
@@ -937,13 +1776,13 @@ var followBot= function(settings){
 
                         else{
 
-                            console.log("simulated repost of of "+tiId);
+                            console.log("simulated repost of of "+tiId +" on topic " + whichBot.currentKeyword + "for "+ whichBot.username);
                         }
 
 
                  
 
-        }, randNum, tiId, blogId1);
+        }, randNum, tiId, blogId1, blogId2);
     }
 
 
@@ -975,7 +1814,9 @@ var followBot= function(settings){
 
             this.currentKeyword = keyword;
             console.log(this.currentKeyword);
-            this.client.tagged(keyword, this.prepareFollowers);
+            airM.whichBotOn(this);
+            var imOnBot=this;
+            this.client.taggedBot(keyword, this.prepareFollowers, imOnBot);
         //searches tumblr for the keyword
         //for all post, it finds the user who posted it
 
@@ -994,23 +1835,35 @@ var followBot= function(settings){
             */  
                var usersArr= [];
 
-                var theBot= airM.getCurrentBot();
-                theBot.batchSize = data.length;
-                var keyword = theBot.currentKeyword;
+                //var theBot= airM.getCurrentBot();
+                var theBot=this;
+                try{
+
+                   theBot.setBatchSize(data.length);
+                    var keyword = theBot.currentKeyword;
+
+                }
+                catch(err1){
+                  console.log("couldnt get bot batchsize");
+                  return false;
+                }
+               
                 for(i in data){
 
                     
 
                   console.log(data[i]['reblog_key']);
-                  data[i]['name']= data[i]['post_url'].replace('http://', '').replace('https://','');
-                  data[i]['id']= data[i]['id'];
+
+                  //maybe post_id instead of id or.. blog_name
+                  data[i]['name']= data[i]['blog_name'].toString().replace('http://', '').replace('https://','') +".tumblr.com";
+                  data[i]['id']= data[i]['id'].toString();
                   console.log(data[i]['name']);
 
                   //takes id
                   theBot.likeUserContent(data[i]['id'], data[i]['reblog_key'], theBot);
 
                   //takes blog name
-                  theBot.repostUserContent(data[i]['name'], data[i]['reblog_key'], theBot);
+                  theBot.repostUserContent(theBot.username+".tumblr.com", data[i]['reblog_key'], data[i]['id'], theBot);
 
                   theBot.getFollowers(data[i]['post_url'], keyword, theBot.gotFollowersCB, theBot)
                 }
@@ -1046,6 +1899,8 @@ var followBot= function(settings){
                 this.download(postUrl, function(data) {
                 
                     // console.log(data);
+
+                    try{
                     var $ = cheerio.load(data);
 
             
@@ -1075,7 +1930,13 @@ var followBot= function(settings){
                         })
                         */
 
+                      }
 
+                      catch(err){
+
+                        console.log('cheerio spit up... returning...');
+                        return false;
+                      }
                     })
 
         }
@@ -1131,6 +1992,8 @@ var followBot= function(settings){
 
     this.allBots =[];
 
+    this.theCurBot=null;
+
 
     this.init = function(botsAll){
         if(typeof botsAll != "array"){
@@ -1148,10 +2011,19 @@ var followBot= function(settings){
         
     }
 
+    this.whichBotOn= function(botObj){
+
+      this.theCurBot= botObj;
+    }
+
     this.getCurrentBot = function(){
 
-        var index= this.botsDeployed-1;
-        return this.allBots[index]['obj'];
+      //edit
+      
+      return this.theCurBot;
+
+       // var index= this.botsDeployed-1;
+        //return this.allBots[index]['obj'];
     }
     this.addBot = function(botInfo){
         if(typeof botInfo =="undefined"){
