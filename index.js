@@ -1337,6 +1337,13 @@ rule.minute = new schedule.Range(0, 59,every );
 
 var k = schedule.scheduleJob(rule, function(){
     console.log('starting tumblr bots every '+ every+ " mins");
+
+    lastStart= 1000;
+startToAdd = 1000;
+lastStartNum =0;
+depTimeout = 3000;
+        oriTimeout = 3000;
+        
     startIt();
 
     
