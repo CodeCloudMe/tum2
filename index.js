@@ -53,6 +53,91 @@ var MongoClient1 = require('mongodb').MongoClient;
     })
 
 
+var theBots = [
+                  {"username":
+                      "bumbletum", 
+                    "category":
+                        "misc",
+                  "settings":
+
+                    //for tumblr
+                    {"userCred":
+                      
+                      {
+                        "tumblr":
+                        {
+                          consumer_key: 'SqFu4wiBMiyfl6v40GBfCOEDEOECxtIn3A1q5z2sirVnqpifZ8',
+                          
+                          consumer_secret: 'I8QizfU4HxDLujUBifDxLicvCn48S3zvn5tf2ewMuTQ8S7CLux',
+                         
+                          token: 'iudo13ly6v7puDysKqpc50fUiU0hJ9MYZULOsYUabN1A3gxnAz',
+                          
+                          token_secret: 'Q71jROnuApeAaaabzQC6yWfCwxaur3XhMDrjkJCQEur9QWd8l8'
+
+                      },
+
+                        "twitter":
+
+                      {
+                         consumer_key: null,
+                        
+                        consumer_secret: null,
+                       
+                        token: null,
+                        
+                        token_secret: null
+
+                      },
+                      "reddit":
+
+                      {
+                         consumer_key: null,
+                        
+                        consumer_secret: null,
+                       
+                        token: null,
+                        
+                        token_secret: null
+
+                      },
+                    "feedly":
+
+                      {
+                         consumer_key: null,
+                        
+                        consumer_secret: null,
+                       
+                        token: null,
+                        
+                        token_secret: null
+
+                      }
+
+                      
+                  }
+
+                  //end social
+                }
+                  ////end credentials
+                
+
+                
+
+                  //end settings
+                }
+
+                  //end bot
+                
+
+                //comma, next bot
+
+
+
+
+
+
+                ]
+var allBotsArr=[];
 //global functs
 
 
@@ -362,10 +447,37 @@ self.app.listen(self.port, self.ipaddress, function() {
 
 
         //test
+
+        console.log('returning for openshift push... remove this line... currently 451 in index.js');
+        return;
+        airM = new airMaster();
+        allTheBots= airM.init(theBots);
+        botsArr= []; 
+        depTimeout = 3000;
+        oriTimeout = 3000;
+        for (i in allTheBots){
+          //initiate the bots into the queue
+          botsArr[i]= new followBot(allTheBots[i]);
+          theKeyword = botsArr[i].getKeyword(botsArr[i]);
+          console.log(theKeyword)
+          
+          var currentBot= botsArr[i];
+         
+          setTimeout(function(){
+            
+            console.log("\n \n \n finished wait... deploying bot.. \n \n\n ");
+            currentBot.findPopularContent(theKeyword);
+          },  depTimeout, currentBot)
+
+          depTimeout= oriTimeout+depTimeout;
+        }
    
-       exUser= new followBot();
+       
+
+   //old before scale below
+      // exUser= new followBot();
       
-        exUser.findPopularContent('mike');
+        //exUser.findPopularContent('mike');
       // getUserInfo();
 
         });
@@ -496,15 +608,22 @@ var followBot= function(settings){
 
     }
     //per minute
+    try{
+      this.currentKeyword= settings['category']
+    }
+    catch(err){
 
-    this.currentKeyword= "fashion";
+      console.log('no category set for this bot. defaulting to fashion');
+      this.currentKeyword= "fashion";
+    }
+    
 
     this.set = settings;
 
     this.username=null;
 
 
-    this.defaultActionLimit=60;
+    this.defaultActionLimit=15;
 
     this.defaultFollowLimit = 10;
 
@@ -514,8 +633,14 @@ var followBot= function(settings){
     //per minute
     this.defaultRepostLimit = 10;
 
+
+    //which one we're on now for this bot
+    this.onPostAction=0;
+
     //per minute
     this.defaultLikeLimit = 10;
+
+    this.onLikeAction=0;
 
     //per minute
     this.defaultUnFollowLimit = 1;
@@ -549,6 +674,8 @@ var followBot= function(settings){
     //to be filled in with tumblr
     this.client=null;
 
+
+    //example for when there is no bots hardcoded or from db
      this.tumblrAuth={
               consumer_key: 'SqFu4wiBMiyfl6v40GBfCOEDEOECxtIn3A1q5z2sirVnqpifZ8',
               consumer_secret: 'I8QizfU4HxDLujUBifDxLicvCn48S3zvn5tf2ewMuTQ8S7CLux',
@@ -556,10 +683,19 @@ var followBot= function(settings){
               token_secret: 'Q71jROnuApeAaaabzQC6yWfCwxaur3XhMDrjkJCQEur9QWd8l8'
         };
 
+    try{
+      this.username=settings['username'];
+      settings=settings['settings'];
+      
+    }
+    catch(err){
+      console.log('not settings or username')
+    }
     //validation
-    if(typeof(settings['userCred']) !="undefined"){
-
-        this.userCred= settings['userCred'];
+    if(typeof settings['userCred'] !="undefined"){
+       this.userCred=[];
+        this.userCred['tumblr'] = tumblr.createClient(settings['userCred']['tumblr'])
+        
 
     }
     else{
@@ -579,6 +715,72 @@ var followBot= function(settings){
 
 
     console.log('got user');
+
+
+    this.getKeyword= function(whichBot){
+
+      var defKeyw = whichBot.currentKeyword;
+      var keywordsArr=[];
+      switch(defKeyw){
+
+        case "fashion":
+
+          keywordsArr=[
+            "vogue", "dkny", "vanity fair", "hotness", "hollywood",
+            "e online", "entertainment", "fashion", "trendy", "clothes", "shoes", "makeup", "cosmetics", "mac girl", "cover girl", "top model", "fashion tips", "goddess", "fashion art", "designer", "fashion designer", "gucci", "lvmh", "louis vuitton", "fashion week", "instagram fashion", "boots", "cute heels", "hipster clothing", "fashion forward", "runway", "fashion contest", "fashion hashtag", "hot fashion", "high fashion", "america's next top model", "rule the runway","cinderella", "wedding dress", "stylish wedding", "pregancy clothing", "skinny clothes", "lipstick", "loreal", "french fashion", "paris fashion", "american fashion", "asian fashion", "japanese fashion", "lora", "josie", "karma", "ashley", "danielle", "heidi", "petra", "ariel", "princess", "barbie", "michelle", "danielle", "jessica", "aubrey",  "prada", "target", "forever 21", "british vogue", "france vogue", "anna wintour", "tommy hilfiger", "calvin klein", "marc jacobs", "summer clothes", "winter clothes", "fashion app", "pinterest", "jeans", "loafers", "candles", "sample sale", "macy's", "mall", "winston", "jewelry", "diamond ring", "gold", "nastygirl", "shopoholic", "shopping", "weekend shopping", "daddy's money", "lexus", "bmw", "girl talk", "girl code", "makeup tips", "blush", "eyeliner", "shampoo", "marie claire", "fashion institute", "parsons", "blouse", "deals on shoes", "look amazing", "sping collection", "winter collection", "autumn collection", "summer collection", "linen", "steve madden", "tyra banks", "next top model", "cute bag", "fashion show", "swank", "my closet", "donna karen", "fitch", "limited", "dillards", "jcpenney", "perfume", "givenchy", "purses", "clutch", "wearing", "hot and not", "ballroom dress", "attire"
+          ]
+
+        break;
+
+        case "celebrity":
+
+           keywordsArr=[
+           "kim kardashian", "paris hilton", "hollywood", "spears", "oprah", "jessica alba", "jessica simpson", "backstreet boys", "justin timberlake", "justin beiber", "miley cyrus", "robin williams", "phillip seymour hoffman", "movies", "movie opening", "theatres", "rainy", "mtv", "vh1", "celebrity gossip", "gawker", "rachael", "sarah", "britney", "monica", "tracy", "debra", "janey", "jane", "mary", "beverly hills", "real housewives", "affair", "reality tv", "teenage", "magazine cover", "tmz", "tabloid", "celebrity roast", "lebron james", "beyonce", "michael jackson", "meagan good", "leonardo dicaprio", "new film", "tribeca film festival", "caan festival", "breaking bad", "lord of the rings", "harry potter", "concert", "live concert", "music festival", "oscars", "webbys", "ginna", "tara", "samantha", "depression", "drug abuse", "celebrity rehab", "roberta", "ellen", "ellen show", "conan", "jay leno", "meme", "broadway", "celeb news", "red carpet", "red carpet photos", "famous", "actress", "actor", "movie director", "indy film", "budget film", "film buff", "celebrity facts", "popsugar", "e!", "celebrity news", "celebs", "LA", "santa monica", "hollywood hills", "malibu", "laguna", "kardashians", "chloe", "singer", "songwriter", "dancer", "eden", "obama", "clinton", "chris tucker", "samuel jackson", "casino", "vegas", "mirage", "essence", "vibe", "time magazine", "gq", "ok magazine", "paparazzi", "filming", "trailer", "star", "rising star", "retired actress", "former model", "own tv show", "the view", "windy williams", "housewives of atlanta", "date millionaire", "katie", "abc", "nbc", "fox", "hbo", "showtime", "tmc", "kanye", "jack", "zuckerberg", "jim", "daisy", "marilyn", "pop culture", "reporter", "anchor", "rehab center", "gala", "scandal", "private island", "billionaire", "nominated", "jen", "brad pitt", "angelina"
+                    ]
+
+        break;
+
+        case "fitness":
+          keywordsArr=[
+            "self", "fitness", "stength", "muscle", "weight watchers", "secret pill", "spa", "gym", "equinox", "24 hour fitness", "nike", "adidas", "running", "wearable", "fitness gadgets", "fitness tips", "exercise tips", "excersize", "get skinny", "fight fat", "workout motivation", "rocky", "track", "tennis", "tennis shoes", "sneakers", "headbands", "workout", "yoga", "tai chi","ninja warrior", "sweat", "sprints", "practice", "running shoes", "world records", "weight lift", "testosterone", "steroids", "muscle tip", "tryouts", "cheerleading", "gymnastics", "ice skating", "trampoline", "medicine ball", "stetches", "fit butt", "jogging", "track and field", "high jump", "red bull", "xtreme sports", "skydiving", "bootcamp", "military training", "eat right", "nutrition tips", "vitamins", "calories", "thin food", "fat-free", "upper body", "gym equipment", "parkour", "rock climbing", "soccer", "serena", "venus", "rochelle", "rhonda", "cindy", "daniella", "rebecca", "reebok", "karen", "connie", "kristin", "lisa", "women's fitness", "aubrey", "jump", "karate", "self-defense", "once a day", "quit smoking", "wine health", "health rumours", "competition", "pro", "first place", "fitness center", "facility", "state of the art", "life balance", "wellness", "modells", "muscle milk", "wrestle", "yoga instructor", "triathlon", "5k", "long distance run", "short distance run", "tyrone", "sophia", "body fuel", "gatorade", "powerade", "energy drink", "min workout", "push-ups", "situps", "rocko", "mountain", "hiking", "rafting", "straddle", "diet", "easy diet", "weight loss diet", "trainer", "boxing"
+        ]
+
+        break;
+
+        case "food":
+
+          keywordsArr=[
+
+            "iron chef", "delicious", "food", "foodie", "kitchen tips", "tasty", "scrumptious", "oven", "pastry", "italian", "sushi", "filet mignon", "ramsey", "zagat", "yelp", "restaurant", "starbucks", "snack", "food pics", "diner", "food truck", "cuisine", "kitchen", "cabinet", "shrimp", "fish", "salmon", "rice", "sake", "wine", "merlot", "pinot noir", "champaigne", "sicily", "travel food", "soups", "recipes", "best recipes", "thanksgiving dinner", "christmas dinner", "turkey", "stuffing", "basil", "spices", "thai food", "french food", "fine dining", "where to eat", "restaurant reviews", "taste test", "mario", "tony", "emily", "emilia", "janet", "secret recipe", "cooking", "cooking lessons", "food apps", "cooking app", "food tech", "food startup", "new restaurant", "restaurant opening", "shake shack", "burger", "fries", "yum", "collette", "donut", "pizzeria", "dumplings", "tapas", "food tv", "food show", "food meme", "cut calories", "gluten-free", "organic", "trader joe's", "kroger", "ingredients", "cruise", "carribean", "all inclusive", "resort", "ruth chris", "olive garden", "wine trip", "vineyard", "agriculture", "farmer's market", "delight", "grubhub", "seamless", "groceries", "grocery list", "noodles", "bread", "toast", "breakfast", "lunch", "dinner", "dinner and a movie", "out tonight", "sunday coupons", "food deals", "fresh direct", "chef", "culinary arts", "culinary school", "chef training", "waiter", "waitress", "dinner reservation"
+             ]
+
+        break;
+
+        default:
+          keywordsArr=[
+
+            "taxi", "mlb", "nba", "finals", "school", "university", "town", "city", "state", "congress", "politics", "arnold", "sam", "patrick", "andrew", "james", "jamie", "rodney", "church", "news", "world news", "gossip", "bummer", "time", "each", "load", "comes", "due", "questions", "life", "meaning", "passion", "suspense", "remorse", "heartache", "pain", "sorrow", "joy", "pleasure", "pain", "wanting", "wanted", "bell", "sound", "music", "genre", "rock", "poetry", "sandals", "instagram", "facebook", "daily", "dose", "new york", "chicago", "seoul", "tokyo", "london", "cape town", "poland", "canada", "mexico", "war", "peace", "happiness", "drought", "iron", "staff", "books", "rick", "ross", "randy", "celeb", "bouncer", "bentley", "beauty", "bounty", "voice", "animation", "cartoon", "3d", "tech", "silicon valley", "nyc", "rent", "office", "bills", "travel", "sickness", "planes", "boats", "accident", "incident", "court", "taxes", "lawsuit", "lawyer", "doctor", "engineer", "websiode", "youtube", "reviews", "local", "bitcoin", "accelerator", "product", "brand", "advertiser", "job", "corporation", "firm", "cincinatti", "portland", "washington", "south america", "colombia", "columbia", "harvard", "mit", "homebrew", "sink", "destination", "pink", "orange", "purple", "blue", "yellow", "art", "grafitti", "newspaper", "magazine", "app", "game", "website", "web designer", "bottled water", "reckless", "danger", "not safe", "shame", "viral", "kickstarter", "myspace", "insanity", "madison", "union square", "chicken", "sandwich", "hungry", "tonight", "miami", "cuba", "havana", "china", "industry", "marketing", "finance", "banks", "insurance", "popular", "trending", "soda", "chair", "street", "lamp", "javascript", "rails", "temorary", "benefit", "analysis", "tease", "cool", "hip", "ears", "mocha", "coffee", "cereal", "convention", "surprise", "birthday"
+          ]
+
+        break;
+
+
+
+
+    
+      }
+
+
+      console.log(keywordsArr);
+         var nRandNum =  Math.floor((Math.random() * keywordsArr.length));
+         console.log(nRandNum)
+
+
+          return keywordsArr[nRandNum];
+    
+     
+     
+    }
 
     this.getListOfUsers= function(){
 
@@ -659,6 +861,17 @@ var followBot= function(settings){
        blogId1=blogId;
         setTimeout(function(){
 
+                     if(whichBot.onLikeAction >= whichBot.defaultLikeLimit){
+                      console.log("reached default limit of likes for user:"+ whichBot.username);
+                      return false;
+                      }
+                      else{
+                        whichBot.onLikeAction =whichBot.onLikeAction +1;
+
+                      }
+
+
+
                         if(mTesting==false){
                    
                         whichBot.client.like(blogId1, tiId, function(data, err){
@@ -696,6 +909,17 @@ var followBot= function(settings){
        var tiId=reblogId;
       var blogId1=blogId;
         setTimeout(function(){
+
+
+              //check for limit
+                      if(whichBot.onPostAction >= whichBot.defaultRepostLimit){
+                      console.log("reached default limit of repost for user:"+ whichBot.username);
+                      return false;
+                      }
+                      else{
+                        whichBot.onPostAction =whichBot.onPostAction +1;
+
+                      }
 
                         if(mTesting==false){
                    
@@ -747,6 +971,7 @@ var followBot= function(settings){
         this.findPopularContent=function(keyword){
 
 
+          console.log(keyword);
 
             this.currentKeyword = keyword;
             console.log(this.currentKeyword);
@@ -907,10 +1132,13 @@ var followBot= function(settings){
     this.allBots =[];
 
 
-    this.init = function(){
-
+    this.init = function(botsAll){
+        if(typeof botsAll != "array"){
+          botsAll= theBots;
+        }
         this.botsDeployed=0;
-        this.allBots = [];
+        this.allBots = botsAll;
+        return this.allBots;
 
     }
      this.reset = function(){
