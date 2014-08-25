@@ -1331,7 +1331,7 @@ self.app.listen(self.port, self.ipaddress, function() {
         var schedule = require('node-schedule');
 
 var rule = new schedule.RecurrenceRule();
-var every =20;//minutes
+var every =10;//minutes
 rule.minute = new schedule.Range(0, 59,every );
 
 
