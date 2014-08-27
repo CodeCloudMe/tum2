@@ -1337,7 +1337,7 @@ self.app.listen(self.port, self.ipaddress, function() {
 var rule = new schedule.RecurrenceRule();
 var every =10;//minutes
 rule.minute = new schedule.Range(0, 59,every );
-
+console.log('sched activated every' + every);
 
 var k = schedule.scheduleJob(rule, function(){
     console.log('starting tumblr bots every '+ every+ " mins");
