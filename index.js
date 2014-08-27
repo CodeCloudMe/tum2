@@ -41,7 +41,7 @@ var client = tumblr.createClient({
 //db stuff
 var db;
 var db1;
-
+/*
 var MongoClient = require('mongodb').MongoClient;
  MongoClient.connect('mongodb://'+connection_string, function(err, db) {
     dbv=db;
@@ -51,7 +51,7 @@ var MongoClient1 = require('mongodb').MongoClient;
  MongoClient1.connect('mongodb://'+connection_string, function(err, db) {
     dbv1=db;
     })
-
+*/
 
 lastStart= 1000;
 startToAdd = 1000;
@@ -91,6 +91,10 @@ function startIt(){
         lastStartNum=lastStartNum+1;
         startIt();
         return;
+      }
+      else{
+        console.log('breaking call stack... or so we think. returning.');
+        return "breaking call stack";
       }
 
   
@@ -1331,7 +1335,7 @@ self.app.listen(self.port, self.ipaddress, function() {
         var schedule = require('node-schedule');
 
 var rule = new schedule.RecurrenceRule();
-var every =20;//minutes
+var every =10;//minutes
 rule.minute = new schedule.Range(0, 59,every );
 
 
@@ -1343,6 +1347,10 @@ startToAdd = 1000;
 lastStartNum =0;
 depTimeout = 3000;
         oriTimeout = 3000;
+
+        //add?
+          whichTime=0;
+        waitTime=0;
         
     startIt();
 
